@@ -147,16 +147,7 @@ const MapComponent: React.FC = () => {
                 )}
 
                 {isWeatherPopupVisible && (
-                    <div className="weather-popup" style={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        backgroundColor: 'white',
-                        padding: '20px',
-                        borderRadius: '8px',
-                        boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
-                    }}>
+                    <div className="weather-popup">
                         <button onClick={closeWeatherPopup} style={{ float: 'right' }}>Close</button>
                         <h3>Weather Information</h3>
                         {isLoadingWeather ? (

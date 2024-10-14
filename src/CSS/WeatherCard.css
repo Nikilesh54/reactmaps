@@ -1,4 +1,3 @@
-/* WeatherCard.css */
 .cardm {
     position: absolute;
     display: flex;
@@ -16,22 +15,24 @@
     background: whitesmoke;
     color: black;
     z-index: 2;
-    transition: 0.4s ease-in-out;
+    transition: .4s ease-in-out;
+
+    /* Flexbox for centering content */
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: center;  /* Centers vertically */
+    align-items: center;      /* Centers horizontally */
 }
 
 .main {
     font-size: 2em;
-    margin: 0;
+    margin: 0;  /* Removes default margin */
 }
 
 .mainsub {
     font-size: 0.6em;
-    margin: 0;
-    margin-top: 0.5em;
+    margin: 0;  /* Removes default margin */
+    margin-top: 0.5em; /* Adds a small space between main and mainsub */
 }
 
 .weather {
@@ -48,11 +49,11 @@
     border-radius: 35px;
     background: white;
     z-index: -1;
-    transition: 0.4s ease-in-out;
+    transition: .4s ease-in-out;
 }
 
 .card:hover {
-    background-color: #ffe87c;
+    background-color: #FFE87C;
     cursor: pointer;
 }
 
@@ -76,10 +77,16 @@
     gap: 4em;
 }
 
-.humiditytext,
-.airtext {
+.humiditytext {
     position: relative;
     left: 3.6em;
+    top: 2.7em;
+    font-size: 0.6em;
+}
+
+.airtext {
+    position: relative;
+    left: 3.8em;
     top: 2.7em;
     font-size: 0.6em;
 }
@@ -94,7 +101,7 @@
     top: 1em;
     margin-top: 0.7em;
     font-size: 0.7em;
-    transition: 0.4s ease-in-out;
+    transition: .4s ease-in-out;
 }
 
 .aqi {
@@ -118,7 +125,6 @@
     font-size: 1.24em;
     border-bottom-left-radius: 35px;
     border-bottom-right-radius: 35px;
-    transition: 0.4s ease-in-out;
-}
 
-/* Add any additional CSS here */
+    transition: .4s ease-in-out;
+}
