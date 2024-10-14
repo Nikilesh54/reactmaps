@@ -1,5 +1,7 @@
 .map-wrapper {
-    flex-grow: 1;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
     transition: margin-left 0.3s;
 }
 
@@ -8,6 +10,11 @@
     height: 100%; /* Adjust height to fit within the new height of the App component */
     background-color: #fff;
     overflow: hidden; /* Allow scrolling if content overflows */
+}
+
+.map-container {
+    flex-grow: 1;
+    position: relative;
 }
 
 /*Weather*/
