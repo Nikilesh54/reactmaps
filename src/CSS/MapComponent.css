@@ -40,3 +40,21 @@
     font-size: 16px;
     cursor: pointer;
 }
+
+/*Tabs*/
+
+.tabs-container {
+    position: absolute;
+    top: 10px;
+    left: 75%;
+    transform: translateX(-50%);
+    z-index: 1000;
+}
+
+/*Post*/
+.post-button-container {
+    position: absolute;
+    top: 10px;
+    right: 70px;
+    z-index: 1000;
+}

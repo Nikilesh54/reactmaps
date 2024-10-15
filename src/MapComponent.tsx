@@ -1,9 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { What3wordsMap, What3wordsAutosuggest } from '@what3words/react-components';
 import './CSS/MapComponent.css';
 import CurrentLocationButton from './CurrentLocationButton';
-import HamburgerMenu from './HamburgerMenu';
+import Tabs from './Tabs';
+import PostButton from './PostButton';
 
 const API_KEY = '4BT9O5NR';  // What3Words API key
 const MAP_API_KEY = 'AIzaSyDIRFZk0OcgUFUn8Qw00te7r4mmls6eALI';  // Google Maps API key
@@ -91,7 +92,12 @@ const MapComponent: React.FC = () => {
 
     return (
         <div className="map-wrapper">
-            {/*<HamburgerMenu />*/}
+            <div className="tabs-container">
+                <Tabs />
+            </div>
+            <div className="post-button-container">
+                <PostButton />
+            </div>
             <div className="map-container">
                 <What3wordsMap
                     id="w3w-map"
