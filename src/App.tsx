@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import MapComponent from './MapComponent';
 import HamburgerMenu from './HamburgerMenu';
-import WeatherCard from './WeatherCard';
+/*import WeatherCard from './WeatherCard';*/
 
 function App() {
     return (

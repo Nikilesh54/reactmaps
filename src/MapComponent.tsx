@@ -1,3 +1,4 @@
+// MapComponent.tsx
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { What3wordsMap, What3wordsAutosuggest } from '@what3words/react-components';
@@ -5,6 +6,7 @@ import './CSS/MapComponent.css';
 import CurrentLocationButton from './CurrentLocationButton';
 import Tabs from './Tabs';
 import PostButton from './PostButton';
+import WeatherCard from './WeatherCard'; // Import the new WeatherCard component
 
 const API_KEY = '4BT9O5NR';  // What3Words API key
 const MAP_API_KEY = 'AIzaSyDIRFZk0OcgUFUn8Qw00te7r4mmls6eALI';  // Google Maps API key
@@ -42,6 +44,7 @@ const MapComponent: React.FC = () => {
         }
     };
 
+    // src/MapComponent.tsx
     const fetchWeatherData = async ({ lat, lng }: { lat: number, lng: number }) => {
         setIsLoadingWeather(true);
         setWeatherError(null);
@@ -53,6 +56,7 @@ const MapComponent: React.FC = () => {
                 throw new Error('Weather data not available');
             }
             const data = await response.json();
+
             setWeatherData(data);
             setIsWeatherPopupVisible(true);
         } catch (error) {
@@ -134,6 +138,8 @@ const MapComponent: React.FC = () => {
                     </div>
                 </What3wordsMap>
 
+
+                {/*Latitude and Longitude Popup*/}
                 {isCoordinatesVisible && selectedLatLng && (
                     <div className="coordinates-popup" style={{
                         position: 'absolute',
@@ -152,26 +158,13 @@ const MapComponent: React.FC = () => {
                     </div>
                 )}
 
-                {isWeatherPopupVisible && (
-                    <div className="weather-popup">
-                        <button onClick={closeWeatherPopup} style={{ float: 'right' }}>Close</button>
-                        <h3>Weather Information</h3>
-                        {isLoadingWeather ? (
-                            <p>Loading weather data...</p>
-                        ) : weatherError ? (
-                            <p style={{ color: 'red' }}>{weatherError}</p>
-                        ) : weatherData ? (
-                            <div>
-                                <p>Temperature: {weatherData.main.temp.toFixed(1)}°C</p>
-                                <p>Weather: {weatherData.weather[0].description}</p>
-                                <p>Humidity: {weatherData.main.humidity}%</p>
-                                <p>Wind Speed: {weatherData.wind.speed} m/s</p>
-                            </div>
-                        ) : (
-                            <p>No weather data available</p>
-                        )}
-                    </div>
-                )}
+                <WeatherCard
+                    isWeatherPopupVisible={isWeatherPopupVisible}
+                    isLoadingWeather={isLoadingWeather}
+                    weatherError={weatherError}
+                    weatherData={weatherData}
+                    closeWeatherPopup={closeWeatherPopup}
+                />
             </div>
         </div>
     );
