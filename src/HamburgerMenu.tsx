@@ -49,9 +49,9 @@ const HamburgerMenu: React.FC = () => {
             </div>
             <div className="menu-item">
                 <i className="icon">⚙️</i>
-                {isHovered && <span>Option 5</span>}
+                {isHovered && <span>Settings</span>}
             </div>
-            <div className="menu-footer">
+            {/*<div className="menu-footer">
                 <div className="color-theme">
                     {isHovered && <span>Light mode</span>}
                     <i className="icon">🌙</i>
@@ -60,7 +60,7 @@ const HamburgerMenu: React.FC = () => {
                     <i className="icon">🔒</i>
                     {isHovered && <span>Logout</span>}
                 </div>
-            </div>
+            </div>*/}
 
 
         </div>

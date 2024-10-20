@@ -1,16 +1,16 @@
-// MapComponent.tsx
-import React from 'react';
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { What3wordsMap, What3wordsAutosuggest } from '@what3words/react-components';
 import './CSS/MapComponent.css';
 import CurrentLocationButton from './CurrentLocationButton';
 import Tabs from './Tabs';
 import PostButton from './PostButton';
-import WeatherCard from './WeatherCard'; // Import the new WeatherCard component
+import WeatherCard from './WeatherCard';
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import ReactiveForm from './ReactiveForm';
 
-const API_KEY = '4BT9O5NR';  // What3Words API key
-const MAP_API_KEY = 'AIzaSyDIRFZk0OcgUFUn8Qw00te7r4mmls6eALI';  // Google Maps API key
-const WEATHER_API_KEY = '9e39bcf3d5d4d16d46058e69edb02e8d';  // OpenWeatherMap API key
+const API_KEY = '4BT9O5NR';
+const MAP_API_KEY = 'AIzaSyDIRFZk0OcgUFUn8Qw00te7r4mmls6eALI';
+const WEATHER_API_KEY = '9e39bcf3d5d4d16d46058e69edb02e8d';
 
 const MapComponent: React.FC = () => {
     const [currentLocation, setCurrentLocation] = useState<{ lat: number, lng: number } | null>(null);
@@ -20,7 +20,9 @@ const MapComponent: React.FC = () => {
     const [isCoordinatesVisible, setIsCoordinatesVisible] = useState(false);
     const [isLoadingWeather, setIsLoadingWeather] = useState(false);
     const [weatherError, setWeatherError] = useState<string | null>(null);
-    const mapRef = useRef<any>(null);
+    const [markers, setMarkers] = useState<{ lat: number, lng: number }[]>([]);
+    const [isMarkerPlacementMode, setIsMarkerPlacementMode] = useState(false);
+    const mapRef = useRef<google.maps.Map | null>(null);
 
     const handleCurrentLocation = () => {
         if (navigator.geolocation) {
@@ -30,8 +32,8 @@ const MapComponent: React.FC = () => {
                     setCurrentLocation({ lat: latitude, lng: longitude });
                     setSelectedLatLng({ lat: latitude, lng: longitude });
 
-                    if (mapRef.current && mapRef.current.map) {
-                        mapRef.current.map.setCenter({ lat: latitude, lng: longitude });
+                    if (mapRef.current) {
+                        mapRef.current.setCenter({ lat: latitude, lng: longitude });
                     }
                     fetchWeatherData({ lat: latitude, lng: longitude });
                 },
@@ -44,7 +46,6 @@ const MapComponent: React.FC = () => {
         }
     };
 
-    // src/MapComponent.tsx
     const fetchWeatherData = async ({ lat, lng }: { lat: number, lng: number }) => {
         setIsLoadingWeather(true);
         setWeatherError(null);
@@ -69,9 +70,11 @@ const MapComponent: React.FC = () => {
 
     const handleSquareSelect = (event: any) => {
         const { lat, lng } = event.detail.coordinates;
-        setSelectedLatLng({ lat, lng });
-        setIsCoordinatesVisible(true);
-        fetchWeatherData({ lat, lng });
+        if (lat && lng) {
+            setSelectedLatLng({ lat, lng });
+            setIsCoordinatesVisible(true);
+            fetchWeatherData({ lat, lng });
+        }
     };
 
     useEffect(() => {
@@ -94,14 +97,28 @@ const MapComponent: React.FC = () => {
         setIsWeatherPopupVisible(false);
     };
 
+    // Add this state to manage the visibility of the reactive form
+    const [showForm, setShowForm] = useState(false);
+
+    // Function to open the form when the post button is clicked
+    const handlePostButtonClick = () => {
+        setShowForm(true);
+    };
+
+    // Function to close the form
+    const closeForm = () => {
+        setShowForm(false);
+    };
+
     return (
         <div className="map-wrapper">
             <div className="tabs-container">
                 <Tabs />
             </div>
             <div className="post-button-container">
-                <PostButton />
+                <PostButton onClick={handlePostButtonClick} />
             </div>
+            {showForm && <ReactiveForm onClose={closeForm} />}
             <div className="map-container">
                 <What3wordsMap
                     id="w3w-map"
@@ -119,7 +136,6 @@ const MapComponent: React.FC = () => {
                     current_location_control_position={9}
                     disable_default_ui={true}
                     words="filled.count.soap"
-                    ref={mapRef}
                     style={{ width: '100%', height: '100%' }}
                 >
                     <div slot="map" style={{ width: '100%', height: '100%' }} />
@@ -127,9 +143,8 @@ const MapComponent: React.FC = () => {
                         <What3wordsAutosuggest>
                             <input
                                 type="text"
-                                placeholder="Find your address"
-                                style={{ width: '300px' }}
-                                autoComplete="off"
+                                placeholder="Search for a 3 word address"
+                                style={{ width: '100%' }}
                             />
                         </What3wordsAutosuggest>
                     </div>
@@ -138,23 +153,34 @@ const MapComponent: React.FC = () => {
                     </div>
                 </What3wordsMap>
 
+                <LoadScript googleMapsApiKey={MAP_API_KEY}>
+                    <GoogleMap
+                        mapContainerStyle={{ width: '100%', height: '100%' }}
+                        center={currentLocation || { lat: 38.89680649400657, lng: -77.18941237551974 }}
+                        zoom={18}
+                        onLoad={map => {
+                            mapRef.current = map;
+                        }}
+                    >
+                        {markers.map((marker, index) => (
+                            <Marker key={index} position={marker} />
+                        ))}
+                    </GoogleMap>
+                </LoadScript>
 
-                {/*Latitude and Longitude Popup*/}
                 {isCoordinatesVisible && selectedLatLng && (
                     <div className="coordinates-popup" style={{
                         position: 'absolute',
-                        top: '20px',
-                        left: '20px',
+                        bottom: '10px',
+                        left: '10px',
                         backgroundColor: 'white',
                         padding: '10px',
-                        border: '1px solid black',
-                        borderRadius: '8px',
-                        boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
+                        borderRadius: '5px',
+                        boxShadow: '0 0 10px rgba(0,0,0,0.1)'
                     }}>
-                        <button onClick={closeCoordinatesPopup} style={{ float: 'right' }}>Close</button>
-                        <h3>Coordinates</h3>
-                        <p>Latitude: {selectedLatLng.lat.toFixed(6)}</p>
-                        <p>Longitude: {selectedLatLng.lng.toFixed(6)}</p>
+                        <p>Latitude: {selectedLatLng.lat}</p>
+                        <p>Longitude: {selectedLatLng.lng}</p>
+                        <button onClick={closeCoordinatesPopup}>Close</button>
                     </div>
                 )}
 

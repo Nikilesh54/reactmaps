@@ -1,9 +1,9 @@
 import React from 'react';
 import './CSS/PostButton.css';
 
-const FancyButton: React.FC = () => {
+const PostButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
     return (
-        <a className="fancy" href="#">
+        <a className="fancy" href="#" onClick={onClick}>
             <span className="top-key"></span>
             <span className="text">Post</span>
             <span className="bottom-key-1"></span>
@@ -12,4 +12,4 @@ const FancyButton: React.FC = () => {
     );
 };
 
-export default FancyButton;
+export default PostButton;

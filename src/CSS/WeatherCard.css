@@ -1,0 +1,82 @@
+/* WeatherCard.css */
+
+.weather-popup {
+    width: 300px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f5f5f5;
+    position: absolute;
+    top: 300px; /* Adjust as needed */
+    right: -160px; /* Adjust as needed */
+    font-family: Arial, sans-serif;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: transparent;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.close-button i {
+    font-size: 16px;
+    color: black;
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.weather-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.temperature {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    width: 100%;
+}
+
+.details-item {
+    background-color: #e0e0e0;
+    padding: 10px;
+    text-align: center;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.bottom-info {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.weather,
+.location {
+    background-color: #ccc;
+    padding: 8px 12px;
+    border-radius: 20px;
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.error {
+    color: red;
+    text-align: center;
+}

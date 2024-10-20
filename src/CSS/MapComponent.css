@@ -58,3 +58,9 @@
     right: 70px;
     z-index: 1000;
 }
+
+
+/* Add this CSS to your stylesheet */
+what3words-map > div:last-child {
+    display: none;
+}
